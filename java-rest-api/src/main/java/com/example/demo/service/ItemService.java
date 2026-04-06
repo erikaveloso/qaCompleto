@@ -46,4 +46,25 @@ public class ItemService {
         }
         return false;
     }
+
+
+    // prova 
+
+    public Optional<Item> getItemByName(String name) {
+    return items.stream()
+            .filter(item -> item.getName().equalsIgnoreCase(name))
+            .findFirst();
+}
+
+public Optional<Item> updateItemDescription(Long id, String description) {
+    Optional<Item> optionalItem = getItemById(id);
+
+    if (optionalItem.isPresent()) {
+        Item item = optionalItem.get();
+        item.setDescription(description);
+        return Optional.of(item);
+    }
+
+    return Optional.empty();
+}
 }

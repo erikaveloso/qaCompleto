@@ -54,4 +54,31 @@ public class ApiController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
+    // prova
+
+    @GetMapping("/search")
+public ResponseEntity<Item> getItemByName(@RequestParam String name) {
+    if (name == null || name.trim().isEmpty()) {
+        return ResponseEntity.badRequest().build();
+    }
+
+    return itemService.getItemByName(name)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
+
+@PatchMapping("/{id}/description")
+public ResponseEntity<Item> updateItemDescription(@PathVariable Long id,
+                                                  @RequestBody Item item) {
+    if (item.getDescription() == null || item.getDescription().trim().isEmpty()) {
+        return ResponseEntity.badRequest().build();
+    }
+
+    return itemService.updateItemDescription(id, item.getDescription())
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
 }

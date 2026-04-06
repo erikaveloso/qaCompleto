@@ -193,4 +193,108 @@ public void givenItemsExist_whenGetAllItems_thenReturns200AndItemList() throws E
         mockMvc.perform(delete("/api/items/1"))
                 .andExpect(status().isNoContent()); // Verifica pelo status 204
     }
+
+
+    // prova
+
+    @Test
+public void whenDeleteItem_thatDoesNotExist_thenReturns404NotFound() throws Exception {
+    when(itemService.deleteItem(999L)).thenReturn(false);
+
+    mockMvc.perform(delete("/api/items/999"))
+            .andExpect(status().isNotFound());
+}
+
+@Test
+public void testCreateItemWithMalformedJson_ShouldReturnBadRequest() throws Exception {
+    String invalidJson = "{ \"name\": \"Item\", \"description\": ";
+
+    mockMvc.perform(post("/api/items")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(invalidJson))
+            .andExpect(status().isBadRequest());
+}
+
+@Test
+public void whenUpdateItem_withInvalidData_thenReturns400BadRequest() throws Exception {
+    Item invalidItem = new Item(1L, "", "");
+
+    mockMvc.perform(put("/api/items/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(invalidItem)))
+            .andExpect(status().isBadRequest());
+}
+
+
+@Test
+public void whenGetItemByName_withExistingName_thenReturns200AndItem() throws Exception {
+    Item item = new Item(1L, "Item 1", "Description 1");
+    when(itemService.getItemByName("Item 1")).thenReturn(Optional.of(item));
+
+    mockMvc.perform(get("/api/items/search")
+                    .param("name", "Item 1")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", is(1)))
+            .andExpect(jsonPath("$.name", is("Item 1")));
+}
+
+@Test
+public void whenGetItemByName_withNonExistingName_thenReturns404() throws Exception {
+    when(itemService.getItemByName("Inexistente")).thenReturn(Optional.empty());
+
+    mockMvc.perform(get("/api/items/search")
+                    .param("name", "Inexistente")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+}
+
+@Test
+public void whenGetItemByName_withEmptyName_thenReturns400() throws Exception {
+    mockMvc.perform(get("/api/items/search")
+                    .param("name", "")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+}
+
+@Test
+public void whenUpdateDescription_withValidData_thenReturns200AndUpdatedItem() throws Exception {
+    Item updatedItem = new Item(1L, "Item 1", "Nova descrição");
+    Item requestBody = new Item(null, null, "Nova descrição");
+
+    when(itemService.updateItemDescription(1L, "Nova descrição"))
+            .thenReturn(Optional.of(updatedItem));
+
+    mockMvc.perform(patch("/api/items/1/description")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(requestBody)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.description", is("Nova descrição")));
+}
+
+@Test
+public void whenUpdateDescription_withNonExistingId_thenReturns404() throws Exception {
+    Item requestBody = new Item(null, null, "Nova descrição");
+
+    when(itemService.updateItemDescription(999L, "Nova descrição"))
+            .thenReturn(Optional.empty());
+
+    mockMvc.perform(patch("/api/items/999/description")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(requestBody)))
+            .andExpect(status().isNotFound());
+}
+
+@Test
+public void whenUpdateDescription_withEmptyDescription_thenReturns400() throws Exception {
+    Item requestBody = new Item(null, null, "");
+
+    mockMvc.perform(patch("/api/items/1/description")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(requestBody)))
+            .andExpect(status().isBadRequest());
+}
+
+
+
 }
