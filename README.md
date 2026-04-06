@@ -1,4 +1,4 @@
-![Relatório de cobertura JaCoCo](images/jacoco-report.png)
+![Relatório de cobertura JaCoCo](java-rest-api/images/jacoco-report.png)
 
 Java REST API - Testes Unitários
 
