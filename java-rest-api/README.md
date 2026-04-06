@@ -1,98 +1,93 @@
-# Java REST API
+![Relatório de cobertura JaCoCo](java-rest-api/images/jacoco-report.png)
 
-Este projeto é uma API REST simples em Java, desenvolvida com Spring Boot. Ele disponibiliza endpoints para gerenciar itens e oferece suporte a respostas nos formatos JSON e XML.
+Java REST API - Testes Unitários
 
-## Estrutura do Projeto
+Descrição do Projeto
 
-```
+Este projeto é uma API REST simples desenvolvida com Spring Boot para gerenciamento de itens.
+A aplicação oferece suporte aos formatos JSON e XML e foi utilizada para implementar e validar testes unitários automatizados.
+
+O objetivo desta atividade foi completar a suíte de testes do projeto base fornecido na branch UnitCompleto, cobrindo cenários de sucesso, falhas, exceções e validações de regras de negócio.
+
+---
+
+Tecnologias Utilizadas
+
+- Java
+- Spring Boot
+- JUnit 5
+- Mockito
+- MockMvc
+- Maven
+- JaCoCo
+
+---
+
+Estrutura do Projeto
+
 java-rest-api
-├── pom.xml
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── example
-│   │   │           └── demo
-│   │   │               ├── DemoApplication.java
-│   │   │               ├── controller
-│   │   │               │   └── ApiController.java
-│   │   │               └── model
-│   │   │                   └── Item.java
-│   │   └── resources
-│   │       └── application.properties
-│   └── test
-│       └── java
-│           └── com
-│               └── example
-│                   └── demo
-│                       └── ApiControllerTest.java
-└── README.md
-```
+|-- images
+|   |-- jacoco-report.png
+|-- src
+|-- pom.xml
+|-- README.md
 
-## Instruções de Configuração
+---
 
-1. **Clonar o repositório::**
-   ```
-   git clone <repository-url>
-   cd java-rest-api
-   ```
+Endpoints da API
 
-2. **Compilar o projeto:**
-   Certifique-se de que o Maven esteja instalado e, em seguida, execute:
-   ```
-   mvn clean install
-   ```
+Endpoints existentes:
+- GET /api/items
+- GET /api/items/{id}
+- POST /api/items
+- PUT /api/items/{id}
+- DELETE /api/items/{id}
 
-3. **Executar a aplicação:**
-   Você pode iniciar a aplicação utilizando:
-   ```
-   mvn spring-boot:run
-   ```
+Novos endpoints adicionados:
+- GET /api/items/search?name=...
+- PATCH /api/items/{id}/description
 
-4. **Acessar a API:**
-   A API estará disponível em `http://localhost:8080/api/items`.
+---
 
-## Exemplos de Uso
+Regras de Negócio
 
-- **Obter todos os itens:**
-  ```
-  GET /api/items
-  ```
+- name é obrigatório
+- description é obrigatório
+- não permitir valores vazios
+- JSON inválido retorna 400
+- item inexistente retorna 404
 
-- **Obter um item por ID:**
-  ```
-  GET /api/items/{id}
-  ```
+---
 
-- **Criar um novo item:**
-  ```
-  POST /api/items
-  Content-Type: application/json
+Como Executar
 
-  {
-      "name": "Item Name",
-      "description": "Item Description"
-  }
-  ```
+cd java-rest-api
+mvn spring-boot:run
 
-## Testes
+---
 
-Testes unitários estão incluídos no projeto para validar a funcionalidade da API. Você pode executá-los utilizando:
-```
+Executar Testes
+
 mvn test
-```
 
-Isso executará os testes definidos em `ApiControllerTest.java`, os quais verificam as respostas corretas em JSON e XML, além de validar os códigos de status HTTP.
+---
 
-## Testes unitários
+Gerar Cobertura
 
-Cenários de Testes de exceção
-Corpo da Requisição Vazio - Verificar como a API reage a um POST sem dados. - Um erro de "Bad Request" (Status 400).
-Corpo da Requisição com JSON Inválido - Verificar o comportamento com um JSON malformado. - Um erro de "Bad Request" (Status 400).
+mvn clean verify
 
-Cenários de Testes "mundo real"
-Buscar todos os itens quando a lista está vazia - Garante que a API retorne uma resposta graciosa (uma lista vazia ``) em vez de um erro ou null quando não há dados.
-Buscar todos os itens quando existem dados - Valida o "caminho feliz" para a listagem, verificando a estrutura do array JSON e o número de itens.
-Verificar a estrutura completa da resposta de erro - Além de checar o status `400 Bad Request`, vamos garantir que o corpo do erro contenha as mensagens de validação corretas para os campos específicos.
+Relatório:
+target/site/jacoco/index.html
 
+---
 
+Relatório de Cobertura
+
+Imagem localizada em:
+images/jacoco-report.png
+
+---
+
+Resultado
+
+Projeto com alta cobertura de testes, cobrindo cenários de sucesso e falhas conforme solicitado.
