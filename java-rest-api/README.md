@@ -1,93 +1,61 @@
 ![Relatório de cobertura JaCoCo](java-rest-api/images/jacoco-report.png)
 
-Java REST API - Testes Unitários
+# Java REST API
 
-Descrição do Projeto
+## Descrição do Projeto
 
-Este projeto é uma API REST simples desenvolvida com Spring Boot para gerenciamento de itens.
-A aplicação oferece suporte aos formatos JSON e XML e foi utilizada para implementar e validar testes unitários automatizados.
+Este projeto consiste em uma API REST desenvolvida com Spring Boot para gerenciamento de itens.  
+A aplicação suporta respostas nos formatos JSON e XML.
 
-O objetivo desta atividade foi completar a suíte de testes do projeto base fornecido na branch UnitCompleto, cobrindo cenários de sucesso, falhas, exceções e validações de regras de negócio.
-
----
-
-Tecnologias Utilizadas
-
-- Java
-- Spring Boot
-- JUnit 5
-- Mockito
-- MockMvc
-- Maven
-- JaCoCo
+O objetivo desta atividade foi implementar e expandir testes unitários automatizados, garantindo a validação das regras de negócio, cenários de sucesso e tratamento de erros.
 
 ---
 
-Estrutura do Projeto
+## Regras de Negócio
 
-java-rest-api
-|-- images
-|   |-- jacoco-report.png
-|-- src
-|-- pom.xml
-|-- README.md
+As principais regras implementadas são:
 
----
-
-Endpoints da API
-
-Endpoints existentes:
-- GET /api/items
-- GET /api/items/{id}
-- POST /api/items
-- PUT /api/items/{id}
-- DELETE /api/items/{id}
-
-Novos endpoints adicionados:
-- GET /api/items/search?name=...
-- PATCH /api/items/{id}/description
+- O campo **name é obrigatório**
+- O campo **description é obrigatório**
+- Não é permitido enviar valores nulos ou vazios
+- JSON inválido retorna **400 Bad Request**
+- Item inexistente retorna **404 Not Found**
+- Busca por nome não aceita valores vazios
+- Atualização parcial não permite descrição vazia
 
 ---
 
-Regras de Negócio
+## Como Executar a Aplicação
 
-- name é obrigatório
-- description é obrigatório
-- não permitir valores vazios
-- JSON inválido retorna 400
-- item inexistente retorna 404
-
----
-
-Como Executar
+No terminal, execute:
 
 cd java-rest-api
 mvn spring-boot:run
 
+A API estará disponível em:
+http://localhost:8080/api/items
+
 ---
 
-Executar Testes
+## Como Executar os Testes
+
+Para executar os testes unitários:
 
 mvn test
 
 ---
 
-Gerar Cobertura
+## Cobertura de Testes
+
+Para gerar o relatório de cobertura com JaCoCo:
 
 mvn clean verify
 
-Relatório:
+O relatório será gerado em:
 target/site/jacoco/index.html
 
 ---
 
-Relatório de Cobertura
+## Resultado
 
-Imagem localizada em:
-images/jacoco-report.png
-
----
-
-Resultado
-
-Projeto com alta cobertura de testes, cobrindo cenários de sucesso e falhas conforme solicitado.
+O projeto apresenta alta cobertura de testes, validando corretamente regras de negócio, cenários de erro e funcionamento da API.
